@@ -1,8 +1,9 @@
 ---
-layout: topic
-title: Starting with data
-author: Data Carpentry contributors
+title: "Starting with data"
+author: "Data Carpentry contributors"
 minutes: 20
+output: pdf_document
+layout: topic
 ---
 
 ```{r, echo=FALSE, purl=FALSE, message = FALSE}

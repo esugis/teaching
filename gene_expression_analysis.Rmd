@@ -51,10 +51,11 @@ setwd("/Users/nikolaeva/Documents/Dropbox/MILAN_IFOM")
 # Getting the data
 
 Let's first of all download our data.
-Go to the link and download the csv file.
+Go to the link and download .txt file.
 
 ```{r, eval = FALSE, purl = TRUE}
-#download.file("https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/5515439/data_preprocessed.txt", "data/data_preprocessed.txt")
+# Download file
+download.file("https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/6059658/data_preprocessed.csv", "data/data_preprocessed.csv")
 ```
 
 
@@ -64,7 +65,7 @@ Read it into the object data_raw.
 Parameter row.names = 1 identifies that first column in the csv file is read as row names.
 
 ```{r}
-data <- read.table(file = "data/data_preprocessed.txt", sep = "\t", header = TRUE)
+data <- read.table(file = "data/data_preprocessed.csv", sep = ",", header = TRUE)
 ```
 
 # Meet your data
