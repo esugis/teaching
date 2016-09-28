@@ -3,7 +3,7 @@
 title: "Analysing gene expression data"
 author: "Elena Sugis"
 date: "28 September 2016"
-output: html_document
+output: pdf_document
 minutes: 80
 ---
 
@@ -54,7 +54,7 @@ Go to the link and download .txt file.
 
 ```{r, eval = FALSE, purl = TRUE}
 # Download file
-download.file("https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/6059658/data_preprocessed.csv", "data/data_preprocessed.csv")
+download.file("https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/6067029/data_preprocessed.csv", "data/data_preprocessed.csv")
 ```
 
 
@@ -64,7 +64,7 @@ Read it into the object data_raw.
 Parameter row.names = 1 identifies that first column in the csv file is read as row names.
 
 ```{r}
-data <- read.table(file = "data/data_preprocessed.csv", sep = ",", header = TRUE)
+data <- read.table(file = "data/data_preprocessed.csv", sep = ";", header = TRUE, row.names = 1)
 ```
 
 # Meet your data
@@ -180,7 +180,7 @@ k <- 4
 set.seed(1234)
 
 # Run kmeans (check lecture slides) clustering to find clusters in our data
-km <- kmeans(x = data, centers = k, iter.max = 100)
+km <- kmeans(x = data, centers = k)
 ```
 
 ```{r, eval = FALSE}
