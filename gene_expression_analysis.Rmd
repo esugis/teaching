@@ -3,7 +3,7 @@
 title: "Analysing gene expression data"
 author: "Elena Sugis"
 date: "28 September 2016"
-output: pdf_document
+output: html_document
 minutes: 80
 ---
 
@@ -283,8 +283,7 @@ The idea of differential expression analysis is to select the genes that separat
 One way how to find differentially expressed genes is by applying t-test.
 We use this statistical test to compare our sample populations and determine if there is a significant difference between their means.
 In  assumes that both samples come from normally distributed population with not equal variances.
-![](images/ttest1.png)
-![](images/ttest2.png)
+![](images/ttest.png)
 
 ## How to make t-test in R
 Let's compare 2 groups from our data- patients in group1 and healthy people.
