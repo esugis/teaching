@@ -3,7 +3,7 @@
 title: "Analysing gene expression data"
 author: "Elena Sugis"
 date: "28 September 2016"
-output: html_document
+output: pdf_document
 minutes: 80
 ---
 
@@ -153,6 +153,8 @@ In biology quite often similar things act in a similar way. As we study gene exp
 
 We will see how to apply two clustering methods that are very popular in bioinformatics: `kmeans` and `hierarchical` clustering. Let's start with `kmeans`.
 
+![](images/kmeans.png)
+
 In order to work with `kmeans` clustering, one has to choose an appropriate number of clusters,that we want to find in the data. To estimate the number of clusters, Elbow method/plot is used (check https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set). 
 k-means minimize the within group variance and maximize the between-group variance.
 The Elbow method looks at the variance explained as a function of the number of clusters.
@@ -199,6 +201,8 @@ pheatmap(data.frame(km$centers), labels_row = km$size,
 
 
 ## Hierarchical clustering
+
+![](images/hclust.png)
 
 ```{r}
 # Attach the package
