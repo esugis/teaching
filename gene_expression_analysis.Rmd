@@ -3,7 +3,7 @@
 title: "Analysing gene expression data"
 author: "Elena Sugis"
 date: "28 September 2016"
-output: pdf_document
+output: html_document
 minutes: 80
 ---
 
@@ -205,8 +205,7 @@ pheatmap(data.frame(km$centers), labels_row = km$size,
 library(amap)
 
 # Perform hierarchical clustering 
-hc.data <-  hcluster(data, method = "euclidean",
-                 link = "complete")
+hc.data <-  hcluster(data)
 
 # Visualize the result as dendrogram
 plot(hc.data)

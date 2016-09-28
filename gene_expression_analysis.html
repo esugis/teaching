@@ -240,8 +240,7 @@ pheatmap(data.frame(km$centers), labels_row = km$size,
 library(amap)
 
 # Perform hierarchical clustering 
-hc.data &lt;-  hcluster(data, method = &quot;euclidean&quot;,
-                 link = &quot;complete&quot;)
+hc.data &lt;-  hcluster(data)
 
 # Visualize the result as dendrogram
 plot(hc.data)</code></pre>
