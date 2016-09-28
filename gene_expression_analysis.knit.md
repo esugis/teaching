@@ -24,7 +24,8 @@ Bioconductor uses the R statistical programming language, and is open source and
 
 Get the latest version of Bioconductor by starting R and entering the commands:
 
-```{r}
+
+```r
 # source("http://bioconductor.org/biocLite.R")
 # biocLite()
 ```
@@ -35,16 +36,13 @@ Additional help on installing the packages via Bioconductor you can find here ht
 Check in which folder you are now and set the working directory using function `getwd()`.
 Set your working directory.
 
-```{r, eval = FALSE}
+
+```r
 # Set your woking directory
 setwd("MyWorkingDirectory")
-
 ```
 
-```{r, eval = TRUE, echo = FALSE}
-# Set your woking directory
-setwd("/Users/nikolaeva/Documents/Dropbox/MILAN_IFOM")
-```
+
 
 
 # Getting the data
@@ -52,7 +50,8 @@ setwd("/Users/nikolaeva/Documents/Dropbox/MILAN_IFOM")
 Let's first of all download our data.
 Go to the link and download .txt file.
 
-```{r, eval = FALSE, purl = TRUE}
+
+```r
 # Download file
 download.file("https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/6059658/data_preprocessed.csv", "data/data_preprocessed.csv")
 ```
@@ -63,7 +62,8 @@ After we have downloaded the data, let's read it into the object data_raw.
 Read it into the object data_raw.
 Parameter row.names = 1 identifies that first column in the csv file is read as row names.
 
-```{r}
+
+```r
 data <- read.table(file = "data/data_preprocessed.csv", sep = ",", header = TRUE)
 ```
 
@@ -105,7 +105,8 @@ objects.
 
 So let's see what is inside our data.
 
-```{r, eval=FALSE}
+
+```r
 head(data)
 str(data)
 summary(data)
@@ -117,7 +118,8 @@ Heatmaps are great to get a general idea of the dataset that you are working wit
 This type of visualization is well implemented in the package `pheatmap`.
 Install and attach this package by typing in the following commands: 
 
-```{r}
+
+```r
 # install.packages("pheatmap")
 library("pheatmap")
 ```
@@ -126,7 +128,8 @@ Now you can use the function `pheatmap()`. Use `?pheatmap()` to get more informa
 Inspect the argument options that this function has.
 Now we are ready to create our first hetmap.
 
-```{r}
+
+```r
 pheatmap(data,
          cluster_rows = FALSE,
          cluster_cols = FALSE,
@@ -134,19 +137,12 @@ pheatmap(data,
          main="Gene expression in healthy, lesional and nonlesional skin")
 ```
 
+![](gene_expression_analysis_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+
 ## Challenge 1
 Using the help option change the fontsize on the figure.
 
-```{r first_challenge, echo = FALSE}
-# Answer
-pheatmap(data,
-         cluster_rows = FALSE,
-         cluster_cols = FALSE,
-         scale = "none",
-         fontsize_col = 6,
-         fontsize_row = 6,
-         main="Gene expression in healthy, lesional and nonlesional skin")
-```
+![](gene_expression_analysis_files/figure-latex/first_challenge-1.pdf)<!-- --> 
 
 # Cluster your data
 In biology quite often similar things act in a similar way. As we study gene expression, we might be potentially interested in capturing genes that behave in similar fashion. In order to find potentially interesting groups of genes, we would perform a cluster analysis. 
@@ -158,7 +154,8 @@ k-means minimize the within group variance and maximize the between-group varian
 The Elbow method looks at the variance explained as a function of the number of clusters.
 Here is a code that generates an Elbow plot.
 
-```{r, echo=TRUE, eval = FALSE}
+
+```r
 # Calculate the sum of squared distances from cluster members to 
 # centers for ten possible number of clusters
 wss <- sapply(1:10, function(x) sum(kmeans(data, centers=x)$withinss))
@@ -172,7 +169,8 @@ plot(1:10, wss, type="b", xlab="Number of Clusters",
 Choose number of clusters `k` by looking at the Elbow plot you have just created. Remind
 yourselves that an appropriate number of clusters is the number at which the reduction in SSE decreases dramatically. This produces a bending point in the Elbow plot.
 
-```{r}
+
+```r
 # Select more meaningful k by looking at Elbow plot 
 k <- 4 
 
@@ -183,24 +181,28 @@ set.seed(1234)
 km <- kmeans(x = data, centers = k, iter.max = 100)
 ```
 
-```{r, eval = FALSE}
+
+```r
 # Explore the structure of clustering
 head(km)
 ```
 
-```{r}
+
+```r
 # Plot heatmap
 pheatmap(data.frame(km$centers), labels_row = km$size, 
          cluster_rows=F, cluster_cols=F,
          border_color = "grey60",
          main="Clustered gene expression")
-
 ```
+
+![](gene_expression_analysis_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 
 
 ## Hierarchical clustering
 
-```{r}
+
+```r
 # Attach the package
 library(amap)
 
@@ -210,13 +212,24 @@ hc.data <-  hcluster(data, method = "euclidean",
 
 # Visualize the result as dendrogram
 plot(hc.data)
+```
 
+![](gene_expression_analysis_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
+
+```r
 # Split into 3 clusters
 ct <- cutree(hc.data, k=3)
 
 # Sort the clusters
 sort(ct)
+```
 
+```
+##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+## [36] 2 2 2 2 3 3 3
+```
+
+```r
 # Save the clustering results as RData
 save(ct, hc.data, file = "results/hc.RData")
 ```
@@ -230,7 +243,8 @@ After you have identified the clusters, you can characterise the genes that are 
 We can identify the biological processed that they are involved in using package `GOsummaries`
 or using a web-tool gProfiler http://biit.cs.ut.ee/gprofiler/.
 
-```{r,eval=FALSE}
+
+```r
 # Get gene names in each of the cluster
 g1 <- as.character(names(sort(ct[ct == 1])))
 g2 <- as.character(names(sort(ct[ct == 2])))
@@ -271,7 +285,6 @@ gs_exp <- add_expression.gosummaries(gs, exp = data,
 
 # Plot functional enrichment analysis results together with gene expression
 plot(gs_exp, fontsize = 8, classes = "Groups")
-
 ```
 Visualization of the functional enrichment analysis results of the selected clusters:
 ![](images/GOsummaries.png)
@@ -289,10 +302,30 @@ In  assumes that both samples come from normally distributed population with not
 ## How to make t-test in R
 Let's compare 2 groups from our data- patients in group1 and healthy people.
 
-```{r}
+
+```r
 # Attach library dplyr
 library(dplyr)
+```
 
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 # Select the colums' indices for the patients group 1 and healthy controls
 cases <- grep("PG1.*",colnames(data))
 controls <- grep("H.*",colnames(data))
@@ -302,10 +335,37 @@ ttest_1g <- t.test(data[1,cases],data[1,controls])
 
 # Structure of the output
 str(ttest_1g)
+```
 
+```
+## List of 9
+##  $ statistic  : Named num 5.04
+##   ..- attr(*, "names")= chr "t"
+##  $ parameter  : Named num 51.5
+##   ..- attr(*, "names")= chr "df"
+##  $ p.value    : num 6.13e-06
+##  $ conf.int   : atomic [1:2] 0.737 1.712
+##   ..- attr(*, "conf.level")= num 0.95
+##  $ estimate   : Named num [1:2] 0.752 -0.472
+##   ..- attr(*, "names")= chr [1:2] "mean of x" "mean of y"
+##  $ null.value : Named num 0
+##   ..- attr(*, "names")= chr "difference in means"
+##  $ alternative: chr "two.sided"
+##  $ method     : chr "Welch Two Sample t-test"
+##  $ data.name  : chr "data[1, cases] and data[1, controls]"
+##  - attr(*, "class")= chr "htest"
+```
+
+```r
 # Extract p-value from the resulting data structure
 ttest_1g$p.value
-  
+```
+
+```
+## [1] 6.131004e-06
+```
+
+```r
 # Calculate t-test results for all genes.
 # Apply t-test using `apply()` loop over rows. Select only p-value from the output.
 ttest_res <- apply(data, 1, function(x) t.test(x[cases],x[controls])$p.value)
@@ -327,7 +387,6 @@ write.table(diff_genes, file = "results/diffexp_genes.txt", sep = "\t", row.name
 
 # Extract gene names
 dfg_names <- as.character(diff_genes[,1])
-
 ```
 
 # Boxplot
@@ -338,15 +397,16 @@ Let's select a part of our data related to differentially expressed genes.
 To do so we would need to select the corresponding rows from data.
 
 
-```{r}
-data_diffexp <- data[rownames(data)%in%dfg_names,] 
 
+```r
+data_diffexp <- data[rownames(data)%in%dfg_names,] 
 ```
 
 For that we will modify our dataframe a bit using function `gather()` from the package `tidyr`.
 Install and attach the package as following:
 
-```{r}
+
+```r
 # install.packages("tidyr")
 library("tidyr")
 ```
@@ -365,8 +425,8 @@ We will reshape our object into a form suitable for easy plotting using function
 You can specify the columns that will be converted to long format, or specify the ones you want to remain in the new data frame by prefixing them with '-'. 
 
 Let's create a function that adds the type of our samples (H, PG1, PG2) to the data and converts it to long format.
-```{r}
 
+```r
   # Transpose
   dt <- t(data_diffexp)
   
@@ -394,13 +454,24 @@ Let's create a function that adds the type of our samples (H, PG1, PG2) to the d
 head(data_melt)
 ```
 
+```
+##   Group Gene Expression
+## 1     H    1  0.4200024
+## 2     H    1 -1.7950047
+## 3     H    1 -1.5033506
+## 4     H    1 -1.6701220
+## 5     H    1 -0.8315666
+## 6     H    1 -0.3863213
+```
+
 
 # Boxplots
 
 You can data by looking at the boxplots.
 In case you decided to filter out outliers interquartile rate can be applied as a filtering criterion.
 
-```{r}
+
+```r
 # Attach library ggplot2
 library(ggplot2)
 
@@ -421,5 +492,7 @@ ggplot(data_melt, aes(x = Group, y = Expression))+
         axis.title.x = element_blank(), axis.title.y = element_blank()
         ) 
 ```
+
+![](gene_expression_analysis_files/figure-latex/unnamed-chunk-19-1.pdf)<!-- --> 
 
 

@@ -126,11 +126,10 @@ $(document).ready(function () {
 <blockquote>
 <h2 id="learning-objectives">Learning Objectives</h2>
 <ul>
-<li>apply data normalization</li>
-<li>handle missing data</li>
-<li>filter outliers</li>
 <li>apply clustering techniques</li>
 <li>characterise the results</li>
+<li>perform t-test</li>
+<li>visualise results</li>
 </ul>
 </blockquote>
 <div id="before-we-start" class="section level1">
@@ -207,9 +206,9 @@ library(&quot;pheatmap&quot;)</code></pre>
 </div>
 <div id="cluster-your-data" class="section level1">
 <h1>Cluster your data</h1>
-<p>In biology everything is connected, and there is a very little space for coincidences. Similar things act in a similar way. As we study gene expression, we might be potentially interested in capturing genes that behave in similar fashion. In order to find potentially interesting groups of genes, we would perform a cluster analysis.</p>
+<p>In biology quite often similar things act in a similar way. As we study gene expression, we might be potentially interested in capturing genes that behave in similar fashion. In order to find potentially interesting groups of genes, we would perform a cluster analysis.</p>
 <p>We will see how to apply two clustering methods that are very popular in bioinformatics: <code>kmeans</code> and <code>hierarchical</code> clustering. Let’s start with <code>kmeans</code>.</p>
-<p>In order to work with <code>kmeans</code> clustering, one has to choose an appropriate number of clusters, which he/she anticipates to find in the data. To estimate the number of clusters, Elbow method/plot is used (check <a href="https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set" class="uri">https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set</a>). The Elbow method looks at the variance explained as a function of the number of clusters. Here is a code that generates an Elbow plot.</p>
+<p>In order to work with <code>kmeans</code> clustering, one has to choose an appropriate number of clusters,that we want to find in the data. To estimate the number of clusters, Elbow method/plot is used (check <a href="https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set" class="uri">https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set</a>). k-means minimize the within group variance and maximize the between-group variance. The Elbow method looks at the variance explained as a function of the number of clusters. Here is a code that generates an Elbow plot.</p>
 <pre class="r"><code># Calculate the sum of squared distances from cluster members to 
 # centers for ten possible number of clusters
 wss &lt;- sapply(1:10, function(x) sum(kmeans(data, centers=x)$withinss))
